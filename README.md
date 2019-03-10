@@ -50,44 +50,6 @@ MQTT_RECONNECT_DELAY=5000      # in case of a mqtt disconnection, will wait this
 LOG_PACKETS=no                 # yes/on/true/1 to log every advertisement package to the console
 ```
 
-
-Docker image for Raspberry pi
------------------------------
-
-A Docker image for arm is published on the Docker Hub: [tomdesinto/bluetooth-beacon-mqtt-exporter][hub]
-
-
-```sh
-sudo apt-get install bluetooth
-sudo service bluetooth start
-docker run -d \
-    --net=host \
-    --privileged \
-    -e MQTT_BROKER=mqtt://127.0.0.1 \
-    -e MQTT_TOPIC=beacon \
-    -e LOG_PACKETS=yes \
-    tomdesinto/bluetooth-beacon-mqtt-exporter:rpi
-```
-
-### docker-compose.yml
-
-```yaml
-version: "3"
-
-services:
-  beaconmqtt:
-    image: tomdesinto/bluetooth-beacon-mqtt-exporter:rpi
-    network_mode: host
-    privileged: true
-    environment:
-      MQTT_BROKER: mqtt://127.0.0.1
-      MQTT_TOPIC: beacon
-      MQTT_RECONNECT_DELAY: 5000
-      LOG_PACKETS: "yes"
-```
-
-
-
 Hack
 ----
 
@@ -104,18 +66,8 @@ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 
 ```
 sudo service bluetooth start
-sudo MQTT_BROKER=mqtt://127.0.0.1 MQTT_TOPIC=beacon npm run start
+sudo export MQTT_BROKER=mqtt://127.0.0.1 
+sudoo export MQTT_TOPIC=beacon 
+sudo npm run bluetooth-beacon-mqtt-exporter start
 ```
 
-
-[doc]: https://github.com/thomasleveil/bluetooth-beacon-mqtt-exporter#readme
-[hub]: https://hub.docker.com/r/tomdesinto/bluetooth-beacon-mqtt-exporter
-[npm]: https://www.npmjs.com/package/bluetooth-beacon-mqtt-exporter
-[github]: https://github.com/thomasleveil/bluetooth-beacon-mqtt-exporter
-[dockerfile]: https://github.com/thomasleveil/bluetooth-beacon-mqtt-exporter/blob/master/Dockerfile
-
-[badge-doc]: https://img.shields.io/badge/-documentation-blue.svg
-[badge-npm]: https://badge.fury.io/js/bluetooth-beacon-mqtt-exporter.svg
-[badge-github]: https://img.shields.io/badge/-Github-gray.svg?logo=github&style=social
-[badge-docker-hub]: https://img.shields.io/badge/Docker%20image-rpi-blue.svg?logo=docker
-[badge-dockerfile]: https://img.shields.io/badge/-Dockerfile-blue.svg?logo=docker
